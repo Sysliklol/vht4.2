@@ -63,7 +63,9 @@ public class ConferenceApi {
         // TODO 1
         // Set the teeShirtSize to the value sent by the ProfileForm, if sent
         // otherwise leave it as the default value
+        teeShirtSize = profileForm.getTeeShirtSize();
 
+       
         // TODO 1
         // Set the displayName to the value sent by the ProfileForm, if sent
         // otherwise set it to null
@@ -81,11 +83,15 @@ public class ConferenceApi {
         if(displayName==null) displayName = user.getEmail();
         // Create a new Profile entity from the
         // userId, displayName, mainEmail and teeShirtSize
-        Profile profile = new Profile(userId, displayName, mainEmail, teeShirtSize);
+        Profile profile = getProfile(user);
+        if (profile == null)
+        profile = new Profile(userId, displayName, mainEmail, teeShirtSize);
+        else
+        profile.update(displayName,teeShirtSize);
 
         // TODO 3 (In Lesson 3)
         // Save the Profile entity in the datastore
-
+        ofy().save().entity(profile).now();
         // Return the profile
         return profile;
     }
@@ -108,10 +114,10 @@ public class ConferenceApi {
 
         // TODO
         // load the Profile Entity
-        String userId = user.getUserId();// TODO
-        Key key = null; // TODO
-        Profile profile = new Profile(userId, user.getNickname(), user.getEmail(), TeeShirtSize.NOT_SPECIFIED);
-    // TODO load the Profile entity
+        String userId = user.getUserId();
+        Key key = Key.create(Profile.class,userId);
+        Profile profile = (Profile)ofy().load().key(key).now();
+        // TODO load the Profile entity
         return profile;
     }
 }

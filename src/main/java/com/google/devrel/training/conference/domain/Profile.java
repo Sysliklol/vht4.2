@@ -45,6 +45,14 @@ public class Profile {
 		return userId;
 	}
 
+	public void update(String displayName, TeeShirtSize teeShirtSize) {
+        if (displayName != null) {
+            this.displayName = displayName;
+        }
+        if (teeShirtSize != null) {
+            this.teeShirtSize = teeShirtSize;
+        }
+    }
 	/**
      * Just making the default constructor private.
      */
